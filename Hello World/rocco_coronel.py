@@ -1,1 +1,1 @@
-print("pogi si rocco")
+print("absja")
