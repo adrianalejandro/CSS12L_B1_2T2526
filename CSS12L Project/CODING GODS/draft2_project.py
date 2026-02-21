@@ -3,36 +3,41 @@ import os
 
 filename = "materials.csv"
 
-materials = {}
+materials = dict()
 
 def load_from_csv():
 
 	if os.path.exists(filename):
 
-		file = with open(filename, "r")
+		file = open(filename, "r")
 		reader = csv.reader(file)
 
 		next(reader, None)
 
-		for row in reader:
-			name = row[0].capitalize()
-			tensile_strength = int(row[1])
+		for column in reader:
+			name = column[0].capitalize()
+			tensile_strength = int(column[1])
 			materials[name] = tensile_strength
 
-def save_to_CSV():
+	else:
+		print("The file doesn't exists")
+		
+	file.close()
 
-	file = with open(filename, "w")
+def save_to_csv():
 
+	file = open(filename, "w", newline = "")
 	writer = csv.writer(file)
-
 	writer.writerow(["Material", "Tensile Strength"])
 
 	for name in materials:
 		writer.writerow([name.capitalize(), materials[name]])
 
+	file.close()
+
 def add_material():
 
-    name = input("Material name: ")
+    name = input("Material name: ").capitalize()
 
     if name in materials:
         print("Material already exists.")
@@ -44,9 +49,13 @@ def add_material():
 
     tensile_strength = int(input("Tensile Strength (MPa): "))
 
+    if tensile_strength < 0:
+    	print("Tensile strength must be a positive number.")
+    	return
+
     materials[name] = tensile_strength
 
-    print("Material added successfully!")
+    print(f'{name} added successfully!')
 
 def view_strongest_material():
 
@@ -56,38 +65,56 @@ def view_strongest_material():
 
 def update_material():
 
-    name = input("Enter material name to update: ")
+    name = input("Enter material name to update: ").capitalize()
 
     if name.capitalize() in materials:
 
         new_strength = int(input("Enter new tensile strength (MPa): "))
+
+        if new_strength < 0:
+        	print("Tensile strength must be a positive number.")
+        	return
+        
         materials[name.capitalize()] = new_strength
 
         print("Material updated successfully.")
 
-    else:
-        print("Material not found.")
+    elif name is not materials:
+        	print("Material not found.")
+        	x = input("Do you want to add? (yes/no): ")
+        	if x.lower() == "yes":
+        		add_material()
+        	else:
+        		return
 
 def delete_material():
 
-    name = input("Material the material to delete: ")
+    name = input("Enter the material to delete: ").capitalize()
 
     if name.capitalize() in materials:
         del materials[name.capitalize()]
-        print("Deleted.")
+        print(f'{name} has been deleted.')
 
     else:
         print("Material not found.")
 
-def display_all_materials():
+def display_all_material():
+	y = input("Sort by (name/strength)? ")
+	if y.lower() == "name":
+		print("Data successfully loaded. Displaying contents sorted by name:\n")
+		sorted_materials = sorted(materials.items())
+		print("Material".ljust(30), "Tensile Strength (MPa)")
+		print("-" * 45)
+		for name, tensile_strength in sorted_materials:
+			print(name.ljust(30), tensile_strength)
 
-    if len(materials) == 0:
-        print("No materials found.")
-        return
-
-    print("\nAll Materials:")
-    for name in materials:
-        print(name, "-", materials[name], "MPa")
+	elif y.lower() == "strength":
+		print("Data successfully loaded. Displaying contents sorted by name:\n")
+		sorted_material = sorted(materials.items(), key=lambda x: -x[1])
+		print("Material".ljust(30), "Tensile Strength (MPa)")
+		print("-" * 45)
+		for name, tensile_strength in sorted_material:
+			print(name.ljust(30), tensile_strength)
 
 def display_menu():
     print('''
@@ -102,7 +129,7 @@ def display_menu():
 		8. Exit
 		''')
 
-load_data()
+load_from_csv()
 while True:
 
 	display_menu()
@@ -113,7 +140,7 @@ while True:
 		        add_material()
 
 		    case 2:
-		        show_strongest()
+		        view_strongest_material()
 
 		    case 3:
 		    	update_material()
@@ -122,29 +149,25 @@ while True:
 		    	delete_material()
 
 		    case 5:
-		        show_all()
+		        display_all_material()
 
 		    case 6:
-		        save_data()
-		        print("Data saved.")
+		        save_to_csv()
+		        print("Saving to materials.csv....")
+		        print("Data successfully saved to CSV.")
 
 		    case 7:
-		    	load_data()
-		    	print("Data successfully loaded. Displaying contents sorted by name:\n")
-		    	sorted_materials = sorted(materials.items())
-		    	print("Material".ljust(20), "Tensile Strength (MPa)")
-		    	print("-" * 45)
-		    	for name, strength in sorted_materials:
-		    		print(name.ljust(20), strength)
+		    	load_from_csv()
 
 		    case 8:
 		    	answer = input("Would you like to save before exiting? (yes/no): ")
 
 		    	if answer.lower() == "yes":
 		    		print("Saving to materials.csv...")
-		    		save_data()
+		    		save_to_csv()
 		    		print("Data successfully saved to CSV.")
 		    		print("Exiting program. Goodbye!")
 		    		break
 		    case _:
 		        print("Invalid choice.")
+
