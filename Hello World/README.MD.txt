@@ -1,1 +1,0 @@
-Test for students to experience git.
