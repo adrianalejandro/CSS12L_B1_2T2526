@@ -1,16 +1,14 @@
 #1
-def name()
+def name():
     x = input("Enter your first name: ")
     y = input("Enter your middle name: ")
     z = input("Enter your last name: ")
   
     first = x.strip().capitalize()
-    middle = y.stript().capitalize()
-    last = z.stript().capitalize()
-
-print(" Full Name: " + first + " " + middle + " " + last)
-
-name()
+    middle = y.strip().capitalize()
+    last = z.strip().capitalize()
+    
+print("Formatted Name: " + last + ", " + first + " " + middle[0] + ".")
 
 #2
 def pyramid():
@@ -20,68 +18,60 @@ def pyramid():
     for w in range(1, number + 1):
         print(word * w)
 
-pyramid()
-
 #3
-def validate_name():
-  name = input("Enter your full name: ")
-  
-  if len(name) < 3:
-    print("Error: Name is too short.")
-  else:
-    print("Hello, " + name.title())
-    print("Your name length is: " + str(len(name)))
-
-validate_name()
+def sentence_analyzer():
+    text = input("Enter a sentence: ")
+    chars = len(text)
+    words = len(text.split())
+    
+    vowels = "aeiouAEIOU"
+    v_count = 0
+    for char in text:
+        if char in vowels:
+            v_count += 1
+            
+    print("Characters: " + str(chars))
+    print("Words: " + str(words))
+    print("Vowels: " + str(v_count))
 
 #4
 def palindrome():
     word = input("Enter a word: ").lower()
-    
     reversed_word = word[::-1]
     
     if word == reversed_word:
-        print("Yes! It is a palindrome.")
+        print("The word is a palindrome!")
     else:
-        print("No! It is not a palindrome.")
-      
-palindrome()
+        print("Not a palindrome.")
 
-#5 
+#5
 def shout():
-    
-    msg = input("Type something to shout: ")
-    
-    loud_msg = msg.upper()
-    
-    print(loud_msg + "!!!")
-
-shout()
+    phrase = input("Enter a phrase: ")
+    output = phrase.upper()[::-1]
+    print("Output: " + output)
 
 #6
 def check_email():
     address = input("Enter your email address: ")
 
     if "@" in address and "." in address:
-        print("This looks like a valid email!")
-    else:
-        print("Invalid email format. Missing @ or dot.")
 
-check_email()
+        at_index = address.find("@")
+        username = address[:at_index].lower().replace(".", " ").replace("_", " ")
+        print("Your username is: " + username)
+    else:
+        print("Invalid email address. Please include '@' and a dot (.)")
 
 #7
 def gmail():
-
     email = input("Enter your email address: ").lower()
 
     if "@gmail.com" in email:
-
         username = email.split("@")[0]
         print("Hello, " + username + "! You are using a Google account.")
     else:
         print("This is not a Gmail address.")
-
-gmail()
-
+        
+name()
 
 
