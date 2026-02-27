@@ -58,41 +58,41 @@ def add_material():
     print(f'{name} added successfully!')
 
 def view_strongest_material():
-
+#Check if the dictionary is empty.
 	if not materials:
 		print("No material found to view.")
 		return
-
-	strongest = max(materials, key=materials.get)
-	print(f'Strongest material: {strongest} ({materials[strongest]} MPa)')
+#If dictionary is not empty, proceed with the code below.
+	strongest = max(materials, key=materials.get) #Traversing the dictionary and finding the key with the highest numerical value.
+	print(f'Strongest material: {strongest} ({materials[strongest]} MPa)') #String formatting containing the key and its value.
 
 def update_material():
 
-    name = input("Enter material name to update: ").capitalize()
+    name = input("Enter material name to update: ").capitalize() #Maitaining consistency and ensuring that input would matched to the stored data.
 
-    if name in materials:
+    if name in materials: #Condition if input material was reflected.
 
-        new_strength = (input("Enter new tensile strength (MPa): "))
+        new_strength = (input("Enter new tensile strength (MPa): ")) #Tensile Strength is string due to the possibility of user input being non-numerical.
 
-        if not new_strength.isdigit():
+        if not new_strength.isdigit(): #If the string is not numerical, it falls under this condition. 
         	print("Invalid input. Please enter a numerical value.")
         	return
 
-        convert_new_strength = int(new_strength)	
+        convert_new_strength = int(new_strength) #If string is numerical, it will be converted to an integer.
 
-        if convert_new_strength < 0:
+        if convert_new_strength < 0: #Condition if the integer is less than 0.
         	print("Tensile strength must be a positive number.")
         	return
-        
+        #If integer is greater than 0, proceed with the saving or storing of the changes to the dictionary. 
         materials[name] = convert_new_strength
 
         print("Material updated successfully.")
 
-    elif name not in materials:
+    elif name not in materials: #Condition if the material was not found in the dictionary.
         	print("Material not found.")
         	x = input("Do you want to add? (yes/no): ")
         	if x.lower() == "yes":
-        		add_material()
+        		add_material() #Calling the function in order for the object to be added.
         	else:
         		return
 
@@ -101,7 +101,7 @@ def delete_material():
     name = input("Enter the material to delete: ").capitalize()
 
     if name in materials:
-        del materials[name]
+        del materials[name] #Keyword for deleting an object.
         print(f'{name} has been deleted.')
 
     else:
@@ -209,5 +209,6 @@ while True:
 			#Handles the invalid menu choices	
 		    case _:
 		        print("Invalid choice.")
+
 
 
