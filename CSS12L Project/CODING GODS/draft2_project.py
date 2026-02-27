@@ -10,20 +10,20 @@ filename = "materials.csv"
 
 materials = dict()
 
-def load_from_csv():
+def load_from_csv(): 
+	if os.path.exists(filename): # Check if the CSV file exists
+		if os.path.getsize(filename) > 0: # Check if the file is not empty
+			with open(filename, "r") as file: # Open the file in read mode
+				reader = csv.reader(file)  # Read the CSV file
+				next(reader, None) # Skip the header row
+				for column in reader:  # Loop through each row
+					name = column[0].capitalize() # Get material name and capitalize it
+					tensile_strength = int(column[1]) # Convert tensile strength to integer
+					materials[name] = tensile_strength # Store data in dictionary
 
-	if os.path.exists(filename):
-		if os.path.getsize(filename) > 0:
-			with open(filename, "r") as file:
-				reader = csv.reader(file)
-				next(reader, None)
-				for column in reader:
-					name = column[0].capitalize()
-					tensile_strength = int(column[1])
-					materials[name] = tensile_strength
 
 	else:
-		pass
+		pass  # Do nothing if file does not exist
 
 def save_to_csv():
 
@@ -35,32 +35,33 @@ def save_to_csv():
 
 def add_material():
 
-    name = input("Material name: ").capitalize()
+    name = input("Material name: ").capitalize() # Ask user for material name and capitalize
 
-    if name in materials:
+    if name in materials:  # Check if material already exists
         print("Material already exists.")
-        x = input("Do you want to update it? (yes/no): ")
-        if x.lower() == "yes":
-        	update_material()
+        x = input("Do you want to update it? (yes/no): ") # Ask if user wants to update
+
+        if x.lower() == "yes": # If user chooses yes
+        	update_material() # Call update function
         	return
         else:
-        	return
+        	return # Stop the function if no
 
-    raw_strength = (input("Tensile Strength (MPa): "))
+    raw_strength = (input("Tensile Strength (MPa): "))  # Ask for tensile strength input
 
-    if not raw_strength.isdigit():
+    if not raw_strength.isdigit(): # Check if input is not numeric
     	print("Invalid input. Please enter a numerical value.")
     	return
 
-    tensile_strength = int(raw_strength)
+    tensile_strength = int(raw_strength) # Convert string to integer
 
-    if tensile_strength < 0:
+    if tensile_strength < 0:  # Check if value is negative
     	print("Tensile strength must be a positive number.")
     	return
 
-    materials[name] = tensile_strength
+    materials[name] = tensile_strength # Add material and strength to dictionary
 
-    print(f'{name} added successfully!')
+    print(f'{name} added successfully!') # Display success message
 
 def view_strongest_material():
 #Check if the dictionary is empty.
@@ -214,6 +215,7 @@ while True:
 			#Handles the invalid menu choices	
 		    case _:
 		        print("Invalid choice.")
+
 
 
 
