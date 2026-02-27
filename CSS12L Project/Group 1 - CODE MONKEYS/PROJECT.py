@@ -9,26 +9,26 @@ class Project:
         self.percent = percent
         self.status = status
 
-projects_list = []
+projects_dict = {}
 
 def load_data():
+	global projects_dict
 	try:
 		with open('projects.csv', mode='r') as file:
 			reader = csv.DictReader(file)
-			projects_dict = {}
 			for row in reader:
 				obj = Project(row['Project Name'], row['Start Date'], row['End Date'], row['Percentage Complete'], row['Status'])
 				projects_dict[row['Project Name'].strip().lower()] = obj
 		print("Data loaded Successfully!")		
 	except FileNotFoundError:
-		x = input("Error! File not Found!")
+		print("Error! File not Found!")
 
 def save_data():
 	with open('projects.csv', mode='w', newline='') as file:
 		fieldnames = ['Project Name', 'Start Date', 'End Date', 'Percentage Complete', 'Status']
 		writer = csv.DictWriter(file, fieldnames=fieldnames)
 		writer.writeheader()
-		for p in projects_list:
+		for p in projects_dict.values():
 			writer.writerow({
 				'Project Name': p.name, 'Start Date': p.start,
 				'End Date': p.end, 'Percentage Complete': p.percent, 'Status': p.status
@@ -36,58 +36,63 @@ def save_data():
 
 def add_new_project():
 	name = input("Enter Project Name: ")
+	key = name.strip().lower()
+
+	if key in projects_dict:
+		print(f"{p.name} is already in projects.csv!")
+		return 
+
 	start = input("Enter Start Date: ")
 	end = input("Enter End Date: ")
 	percent = input("Enter Percentage: ")
 	status = input("Enter Status (Planned/Ongoing/Complete): ")
-	
+
 	new_obj = Project(name, start, end, percent, status)
-	projects_list.append(new_obj)
+	projects_dict[key] = new_obj
 	print("Project added successfully!")
 
 def view_all_projects():
-	projects_table = dict()
+	print("====== Construction Project Tracker ======")
+	
+	print(f"{'Project Name':30} {'Start Date':15} {'End Date':15} {'% Complete':<12} {'Status':12}")
+	print("-" * 90)
 
-	with open("projects.csv") as file:
-			table = file.read()
-	rows = table.split("\n")
+	if not projects_dict:
+		print("No projects to display.")
+		return
 
-	x=0
-
-	for row in rows:
-			projects_table[x] = row
-			column = row.split(",")
-			x = x + 1
-	for key, value in projects_table.items():
-			print(f'{key}: {value}')
+	for p in projects_dict.values():
+		print(f"{p.name:30} {p.start:15} {p.end:15} {p.percent:<12} {p.status:12}")
     	
 def update_status():
-	name = input("Enter Project Name: ")
+	name = input("Enter Project Name: ").strip().lower()
 
-	for p in projects_list:
-		if p.name.strip().lower() == name.strip().lower():
-			p.percent = int(input(f"Enter new Percentage Completion for {p.name}: "))
-			p.status = input(f"Enter new status for {p.name}: ")
-			save_data()
-			print("Status Successfully Updated")
-			return
-		print(f"Error. {p.name} not found")		
+	if name in projects_dict:
+		p = projects_dict[name]
+		p.percent = int(input(f"Enter new Percentage Completion for {p.name}: "))
+		p.status = input(f"Enter new status for {p.name}: ")
+		print("Status Successfully Updated! (Don't Forget to Save!)")
+		return
+	else:	
+		print("Error. Project not found")			
 
 def sort():
-	if not projects_list:
+	if not projects_dict:
 		print("No projects to filter.")
 		return
 
-	status_filter = input("Filter by status (Planned/Ongoing/Completed): ").capitalize()
+	status_filter = input("Filter by status (Planned/Ongoing/Completed): ").strip().capitalize()
 
-	print(f"{'Project Name'} {'Start Date'} {'End Date'} {'% Complete'} {'Status'}")
+	print(f"\n{'Project Name':30} {'Start Date':15} {'End Date':15} {'% Complete':<12} {'Status':12}")
+	print("-" * 90)
 
-	for p in projects_list:
+	Found = False
+	for p in projects_dict.values():
 		if p.status.capitalize() == status_filter:
-			print(f"{p.name} {p.start} {p.end} {p.percent} {p.status}")
-			found = True
+			print(f"{p.name:30} {p.start:15} {p.end:15} {p.percent:<12} {p.status:12}")
+			Found = True
 
-	else:
+	if not Found:
 		print(f"No other projects found with status: {status_filter}")
 
 def answer():
@@ -110,7 +115,7 @@ while True:
 	3. Update Completion Status
 	4. Sort by Status
 	5. Save CSV file
-	6. Load from CVS
+	6. Load from CSV
 	7. Exit
 		''')
 	choice = int(input("Select an option: "))
