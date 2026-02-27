@@ -27,11 +27,11 @@ def load_from_csv():
 
 def save_to_csv():
 
-	with open(filename, "w", newline = "") as file:
-		writer = csv.writer(file)
-		writer.writerow(["Material", "Tensile Strength"])
-		for name in materials:
-			writer.writerow([name, materials[name]])
+	with open(filename, "w", newline = "") as file: # Open CSV file in write mode (overwrite old data)
+		writer = csv.writer(file) # Create a CSV writer object
+		writer.writerow(["Material", "Tensile Strength"]) # Write header row first
+		for name in materials:  # Loop through each material in dictionary
+			writer.writerow([name, materials[name]])  # Write material name and its tensile strength into the file
 
 def add_material():
 
@@ -215,6 +215,7 @@ while True:
 			#Handles the invalid menu choices	
 		    case _:
 		        print("Invalid choice.")
+
 
 
 
