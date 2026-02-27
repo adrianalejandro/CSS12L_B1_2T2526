@@ -84,7 +84,7 @@ def sort():
 
 	for p in projects_list:
 		if p.status.capitalize() == status_filter:
-			print(f"{p.name} {p.start} {p.end} {p.percent} {p.status}")
+			print(f"{p.name:<25} {p.start:<10} {p.end:<10} {p.percent:<10} {p.status:<10}")
 			found = True
 
 	else:
