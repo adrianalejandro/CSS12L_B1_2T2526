@@ -11,7 +11,7 @@ class Project:
 
 projects_dict = {}
 
-def load_data():
+def load_data():#this loads the data from csv and puts it into a dictionary
 	global projects_dict
 	try:
 		with open('projects.csv', mode='r') as file:
@@ -23,7 +23,7 @@ def load_data():
 	except FileNotFoundError:
 		print("Error! File not Found!")
 
-def save_data():
+def save_data():#this uses file write and adds or updates the project inside of the dictionary
 	with open('projects.csv', mode='w', newline='') as file:
 		fieldnames = ['Project Name', 'Start Date', 'End Date', 'Percentage Complete', 'Status']
 		writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -34,7 +34,7 @@ def save_data():
 				'End Date': p.end, 'Percentage Complete': p.percent, 'Status': p.status
 			})
 
-def add_new_project():
+def add_new_project():#This adds the project and checks if there is more than one of these in the dictionary
 	name = input("Enter Project Name: ")
 	key = name.strip().lower()
 
@@ -51,7 +51,7 @@ def add_new_project():
 	projects_dict[key] = new_obj
 	print("Project added successfully!")
 
-def view_all_projects():
+def view_all_projects():#views all project in the dictionary in a column format
 	print("====== Construction Project Tracker ======")
 	
 	print(f"{'Project Name':30} {'Start Date':15} {'End Date':15} {'% Complete':<12} {'Status':12}")
@@ -64,7 +64,7 @@ def view_all_projects():
 	for p in projects_dict.values():
 		print(f"{p.name:30} {p.start:15} {p.end:15} {p.percent:<12} {p.status:12}")
     	
-def update_status():
+def update_status():#updates status by matching project name to name in csv-dictionary
 	name = input("Enter Project Name: ").strip().lower()
 
 	if name in projects_dict:
@@ -76,7 +76,7 @@ def update_status():
 	else:	
 		print("Error. Project not found")			
 
-def sort():
+def sort():#sorts the dictionary into groups based on the given status filter
 	if not projects_dict:
 		print("No projects to filter.")
 		return
@@ -95,7 +95,7 @@ def sort():
 	if not Found:
 		print(f"No other projects found with status: {status_filter}")
 
-def answer():
+def answer():#exits the program, ask if saves and exit and breaks loop
 	answer = input("Do you wish to save before exiting? ")
 	x = answer.lower()
 	if(x=='yes'):
@@ -139,3 +139,4 @@ while True:
 			break
 		case _:
 			print("Invalid choice. Please try again.")
+
