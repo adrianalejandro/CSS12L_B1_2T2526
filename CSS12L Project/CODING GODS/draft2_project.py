@@ -107,31 +107,43 @@ def delete_material():
     else:
         print("Material not found.")
 
+#Function to display all materials
+#Default sort by strength
 def display_all_material(sort_by="strength"):
 
+	#Check if the material dictionary is empty
 	if not materials:
 		print("No materials found to display.")
-		return
+		return #Stops the function if no data exists
 
+#Display materials sorted by tensile strength
 	print("Data successfully loaded. Displaying contents sorted by strength:\n")
+#Convert dictionary into key, value and sort by descending	
 	sorted_material = sorted(materials.items(), key=lambda x: -x[1])
+#Print table header
 	print("Material".ljust(30), "Tensile Strength (MPa)")
 	print("-" * 55)
+#Loop through sorted materials and diplay each one
 	for name, tensile_strength in sorted_material:
 		print(name.ljust(30), tensile_strength)
-		
+
+#Ask the user if they want to sort alphabetically by name	
 	y = input("Sort by name? ")
 	if y.lower() == "yes":
 		print("Data successfully loaded. Displaying contents sorted by name:\n")
+#Sort dictionary alphabetically by material name		
 		sorted_materials = sorted(materials.items())
+#Print table header
 		print("Material".ljust(30), "Tensile Strength (MPa)")
 		print("-" * 55)
+#Display sorted results
 		for name, tensile_strength in sorted_materials:
 			print(name.ljust(30), tensile_strength)
 	else:
 		return
 
 
+#Function to display main menu
 def display_menu():
     print('''
     	=== Material Strength Calculator ===
@@ -145,13 +157,19 @@ def display_menu():
 		8. Exit
 		''')
 
+#Load saved data from csv file at the start of the program
 load_from_csv()
+#Main program loops continuously until user exits
 while True:
 
+#Display Menu options	
 	display_menu()
+#Get user input and convert to integer	
 	choice = int(input("Enter your choice: "))
 
+#Use match case to hablde menu selection
 	match(choice):
+	#Call the functions
 		    case 1:
 		        add_material()
 
@@ -186,7 +204,10 @@ while True:
 		    	
 		    	else:
 		    		print("Exiting program. Goodbye!")
+				#Exit the while loop and end program	
 		    	break
+			#Handles the invalid menu choices	
 		    case _:
 		        print("Invalid choice.")
+
 
