@@ -1,3 +1,8 @@
+#This program stores different materials and their tensile strength (MPa).
+# You can add, update, delete, and view materials. The data is saved in a CSV fileso it will not be lost after closing.
+# csv - for reading and saving data to a CSV file
+# os - to check if the file exists
+
 import csv
 import os
 
@@ -209,6 +214,7 @@ while True:
 			#Handles the invalid menu choices	
 		    case _:
 		        print("Invalid choice.")
+
 
 
 
