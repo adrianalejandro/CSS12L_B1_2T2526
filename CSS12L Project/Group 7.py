@@ -60,7 +60,7 @@ def see(sort_by='strength'):
         print("No materials to display.")
         return
 
-    print("\nMaterial.ljust(20)\tTensile Strength (MPa)")
+    print("\nMaterial\tTensile Strength (MPa)")
     print("--------------------------------------------")
 
     if sort_by == "name":
