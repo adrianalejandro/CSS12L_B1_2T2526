@@ -1,1 +1,187 @@
+import csv
+
+
+materials = {}
+filename = "materials.csv"
+#filename = input("Enter a CSV file name: ")
+
+try:
+    with open(filename,'r', newline='') as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        if len(rows) > 1:
+            for row in rows[1:]: 
+                if len(row) == 2:
+                    materials[row[0]] = float(row[1])
+    print(f"Successfully opened {filename}")
+except FileNotFoundError:
+    print(f"File {filename} is not present in the database.")
+    pass
+
+
+while True:
+    print('''
+    ==== Material Strength Calculator ====
+    1. Add New Material
+    2. View Strongest Material
+    3. Update Material 
+    4. Delete Material
+    5. Display All Materials
+    6. Save to CSV
+    7. Load from CSV
+    8. Exit
+    ''')    
+
+    try:
+        choice = int(input("Enter Your Choice: "))
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        continue
+
+    match (choice):
+        case 1:
+            name = input("Material Name: ")
+            if name in materials:
+                update_choice = input(f"{name} already exists. Do you want to update it? (yes/no): ").lower()
+                if update_choice == 'yes':
+                    try:
+                        strength = float(input(f"Enter new tensile strength (MPa): "))
+                        if strength > 0:
+                            materials[name] = strength
+                            print(f"{name} updated successfully.")
+                        else:
+                            print("Strength must be a positive number.")
+                    except ValueError:
+                        print("Invalid number entered.")
+                else:
+                    print("Update cancelled.")
+            else:
+                try:
+                    strength = float(input("Enter tensile strength (MPa): "))
+                    if strength > 0:
+                        materials[name] = strength
+                        print(f"{name} added successfully!")
+                    else:
+                        print("Strength must be a positive number.")
+                except ValueError:
+                    print("Invalid number entered.")
+        case 2:
+            if materials:
+                strongest = max(materials, key=materials.get)
+                print(f"Strongest Material: {strongest} ({materials[strongest]} MPa)")
+            else:
+                print("No data available.")
+
+        case 3:
+            name = input("Enter the material name to update: ")
+            if name in materials:
+                try:
+                    new_strength = float(input(f"Enter new strength for {name}: "))
+                    materials[name] = new_strength
+                    print("Update successful.")
+                except ValueError:
+                    print("Invalid number.")
+
+            else:
+                con = input("Material not found. Do you want to add it? (yes/no): ").lower()
+                if con == 'yes':
+                    try:
+                        tenten = float(input("Enter tensile strength (MPa): "))
+                        materials[name] = tenten
+                        print(f"{tenten} added successfully.")
+                    except ValueError:
+                        print("Invalid number.")        
+
+           
+                else:
+                    print("Material not found.")
+
+        case 4:
+            name = input("Which material would you like to delete? ")
+            if name in materials:
+                del materials[name]
+                print(f"{name} has been removed.")
+            else:
+                print("Invalid material name.")
+
+        case 5:
+            header = "Material".ljust(20) + "| Strength (MPa)"
+            print("\n" + header)
+            print("----------------------------------------")
+            
+            sorted_mats = sorted(materials.items(), key=lambda x: x[1], reverse=True)
+            
+            for name, strength in sorted_mats:
+                print(name.ljust(20) + "    " + str(strength))
+
+        case 6:
+            with open(filename,'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["Material", "Tensile Strength"])
+                for name, strength in materials.items():
+                    writer.writerow([name, strength])
+            print(f"Data saved to {filename}")
+
+        case 7:
+            print(f"Loading from {filename}...")
+            try:
+                with open(filename,'r', newline='') as file:
+                    reader = csv.reader(file)
+                    rows = list(reader)
+                    if len(rows) > 1:
+                         
+                        for row in rows[1:]: 
+                            if len(row) == 2:
+                                 materials[row[0]] = float(row[1])
+            
+                        print("Data successfully loaded. Displaying contents sorted by name: ")
+
+                        header = "Material".ljust(20) + "| Strength (MPa)"
+                        print("\n" + header)
+                        print("----------------------------------------")
+
+                        
+                        for name in sorted(materials.keys()):
+                            print(name.ljust(20) + "| " + str(materials[name]))
+                    else:
+                        print("File has no data.")
+
+            except FileNotFoundError:
+                print(f"Error: {filename} not found.")
+            except ValueError:
+                print("Error: The file contains invalid data (non-numbers).")
+
+
+
+
+
+        case 8:
+            confirm = input("Save before exiting? (yes/no): ").lower()
+            if confirm == 'yes':
+                with open(filename,'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(["Material", "Tensile Strength"])
+                    for name, strength in materials.items():
+                        writer.writerow([name, strength])
+                    print(f"Saving to {filename}...")
+                print("Data successfully saved to CSV.")
+            print("Exiting program. Goodbye!")
+            break
+
+
+
+
+
+            
+
+            
+
+            
+
+
+
+
+
+
+
 

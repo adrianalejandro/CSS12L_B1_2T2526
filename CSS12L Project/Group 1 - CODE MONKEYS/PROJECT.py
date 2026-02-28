@@ -39,7 +39,7 @@ def add_new_project():#This adds the project and checks if there is more than on
 	key = name.strip().lower()
 
 	if key in projects_dict:
-		print(f"{p.name} is already in projects.csv!")
+		print(f"{name} is already in projects.csv!")
 		return 
 
 	start = input("Enter Start Date: ")
