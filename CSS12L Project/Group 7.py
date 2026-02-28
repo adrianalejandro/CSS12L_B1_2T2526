@@ -10,13 +10,13 @@ def add():
     if name in materials:
         choice = input("Material already exists. Do you want to update it? (y/n): ").lower()
         if choice == "yes":
-            new_strength = int(input("Enter new tensile strength (MPa): "))
+            new_strength = float(input("Enter new tensile strength (MPa): "))
             materials[name] = new_strength
             print(f"{name} updated successfully.")
         else:
             print("No changes made.")
     else:
-        strength = int(input("Tensile Strength (MPa): "))
+        strength = float(input("Tensile Strength (MPa): "))
         materials[name] = strength
         print("Material added successfully!")
 
@@ -32,7 +32,7 @@ def update():
     name = input("Enter the material name to update: ").strip()
 
     if name in materials:
-        new_strength = int(input("Enter new tensile strength (MPa): "))
+        new_strength = float(input("Enter new tensile strength (MPa): "))
         materials[name] = new_strength
         print(f"{name} updated successfully.")
 
@@ -41,7 +41,7 @@ def update():
         choice = input("Do you want to add it? (y/n): ").lower()
 
         if choice == "y":
-            strength = int(input("Enter tensile strength (MPa): "))
+            strength = float(input("Enter tensile strength (MPa): "))
             materials[name] = strength
             print(f"{name} added successfully.")
 
@@ -114,15 +114,16 @@ def menu():
     load_from_csv()
 
     while True:
-        print("\n=== Material Strength Calculator ===")
-        print("1. Add Material")
-        print("2. View Strongest Material")
-        print("3. Update Material")
-        print("4. Delete Material")
-        print("5. Display All Materials")
-        print("6. Save to CSV")
-        print("7. Load from CSV")
-        print("8. Exit")
+        print('''\n=== Material Strength Calculator ===
+            1. Add Material
+            2. View Strongest Material
+            3. Update Material
+            4. Delete Material
+            5. Display All Materials
+            6. Save to CSV
+            7. Load from CSV
+            8. Exit
+            ''')
 
         choice = input("Enter your choice: ")
 
