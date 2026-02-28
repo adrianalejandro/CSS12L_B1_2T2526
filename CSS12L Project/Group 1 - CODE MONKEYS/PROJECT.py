@@ -70,7 +70,7 @@ def update_status():#updates status by matching project name to name in csv-dict
 	if name in projects_dict:
 		p = projects_dict[name]
 		p.percent = int(input(f"Enter new Percentage Completion for {p.name}: "))
-		p.status = input(f"Enter new status for {p.name}: ")
+		p.status = input(f"Enter new status for {p.name} (Planned, Ongoing, Completed): ")
 		print("Status Successfully Updated! (Don't Forget to Save!)")
 		return
 	else:	
