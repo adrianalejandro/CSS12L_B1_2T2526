@@ -60,7 +60,7 @@ def see(sort_by='strength'):
         print("No materials to display.")
         return
 
-    print("\nMaterial\tTensile Strength (MPa)")
+    print("\nMaterial.ljust(20)\tTensile Strength (MPa)")
     print("--------------------------------------------")
 
     if sort_by == "name":
@@ -110,8 +110,7 @@ def out():
     print("Exiting program. Goodbye!")
     exit()
  
-def menu():
-    load_from_csv()
+def menu():   
 
     while True:
         print('''\n=== Material Strength Calculator ===
