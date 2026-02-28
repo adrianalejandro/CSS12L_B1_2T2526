@@ -5,7 +5,7 @@ materials = {}
 FILE_NAME = "materials.csv"
 
 def add():
-    name = input("Material Name: ").strip()
+    name = input("Material Name: ").strip().title()
 
     if name in materials:
         choice = input("Material already exists. Do you want to update it? (y/n): ").lower()
@@ -29,7 +29,7 @@ def strongest():
     print(f"Strongest material: {strongest} ({materials[strongest]} MPa)")
 
 def update():
-    name = input("Enter the material name to update: ").strip()
+    name = input("Enter the material name to update: ").strip().title()
 
     if name in materials:
         new_strength = float(input("Enter new tensile strength (MPa): "))
@@ -46,7 +46,7 @@ def update():
             print(f"{name} added successfully.")
 
 def delete():
-    name = input("Enter the material to delete: ").strip()
+    name = input("Enter the material to delete: ").strip().title()
 
     if name in materials:
         del materials[name]
