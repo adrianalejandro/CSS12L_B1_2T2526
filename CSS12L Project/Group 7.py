@@ -9,7 +9,7 @@ def add():
 
     if name in materials:
         choice = input("Material already exists. Do you want to update it? (y/n): ").lower()
-        if choice == "yes":
+        if choice == "y":
             new_strength = float(input("Enter new tensile strength (MPa): "))
             materials[name] = new_strength
             print(f"{name} updated successfully.")
