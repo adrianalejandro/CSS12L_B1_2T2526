@@ -1,0 +1,152 @@
+import csv
+ 
+materials = {}
+ 
+# ---------------------- LOAD FROM CSV ----------------------
+def load_from_csv(filename="materials.csv"):
+    materials.clear()
+    try:
+        with open(filename, "r", newline="") as file:
+            for row in csv.DictReader(file):
+                materials[row["Material"]] = int(row["Tensile Strength"])
+        print("Data successfully loaded from CSV.")
+    except FileNotFoundError:
+        print("materials.csv not found. Starting with empty dictionary.")
+    except Exception as e:
+        print("Error loading file:", e)
+ 
+ 
+# ---------------------- SAVE TO CSV ----------------------
+def save_to_csv(filename="materials.csv"):
+    try:
+        with open(filename, "w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=["Material", "Tensile Strength"])
+            writer.writeheader()
+            for m, s in materials.items():
+                writer.writerow({"Material": m, "Tensile Strength": s})
+        print("Data successfully saved to CSV.")
+    except Exception as e:
+        print("Error saving file:", e)
+ 
+ 
+# ---------------------- ADD MATERIAL ----------------------
+def add_material():
+    name = input("Material Name: ").strip()
+ 
+    if name in materials:
+        if input("Material already exists. Update it? (yes/no): ").lower() == "yes":
+            update_material(name)
+        return
+ 
+    try:
+        strength = int(input("Tensile Strength (MPa): "))
+        if strength <= 0:
+            print("Strength must be positive.")
+            return
+        materials[name] = strength
+        print(f"{name} added successfully.")
+    except ValueError:
+        print("Invalid input. Enter a positive integer.")
+ 
+ 
+# ---------------------- VIEW STRONGEST ----------------------
+def view_strongest_material():
+    if not materials:
+        print("No materials available.")
+        return
+ 
+    strongest = max(materials, key=materials.get)
+    print(f"Strongest material: {strongest} ({materials[strongest]} MPa)")
+ 
+ 
+# ---------------------- UPDATE MATERIAL ----------------------
+def update_material(existing_name=None):
+    name = existing_name if existing_name else input("Enter material name to update: ").strip()
+ 
+    if name in materials:
+        try:
+            strength = int(input("Enter new tensile strength (MPa): "))
+            if strength <= 0:
+                print("Strength must be positive.")
+                return
+            materials[name] = strength
+            print(f"{name} updated successfully.")
+        except ValueError:
+            print("Invalid input. Enter a positive integer.")
+    else:
+        if input("Material not found. Add it? (yes/no): ").lower() == "yes":
+            add_material()
+ 
+ 
+# ---------------------- DELETE MATERIAL ----------------------
+def delete_material():
+    name = input("Enter material to delete: ").strip()
+    if name in materials:
+        del materials[name]
+        print(f"{name} deleted successfully.")
+    else:
+        print("Material not found.")
+ 
+ 
+# ---------------------- DISPLAY MATERIALS ----------------------
+def view_materials():
+    if not materials:
+        print("No materials available.")
+        return
+ 
+    sort_by = input("Sort by (name/strength)? ").lower()
+    items = sorted(materials.items()) if sort_by == "name" \
+        else sorted(materials.items(), key=lambda x: x[1])
+ 
+    print("\nMaterial              Tensile Strength (MPa)")
+    print("--------------------------------------------")
+    for m, s in items:
+        print(f"{m:<20} {s}")
+ 
+ 
+# ---------------------- EXIT PROGRAM ----------------------
+def exit_program():
+    if input("Save before exiting? (yes/no): ").lower() == "yes":
+        save_to_csv()
+    print("Exiting program. Goodbye!")
+    exit()
+ 
+ 
+# ---------------------- MENU ----------------------
+def menu():
+    load_from_csv()
+ 
+    while True:
+        print("\n=== Material Strength Calculator ===")
+        print("1. Add Material")
+        print("2. View Strongest Material")
+        print("3. Update Material")
+        print("4. Delete Material")
+        print("5. Display All Materials")
+        print("6. Save to CSV")
+        print("7. Load from CSV")
+        print("8. Exit")
+ 
+        choice = input("Enter your choice: ")
+ 
+        if choice == "1":
+            add_material()
+        elif choice == "2":
+            view_strongest_material()
+        elif choice == "3":
+            update_material()
+        elif choice == "4":
+            delete_material()
+        elif choice == "5":
+            view_materials()
+        elif choice == "6":
+            save_to_csv()
+        elif choice == "7":
+            load_from_csv()
+        elif choice == "8":
+            exit_program()
+        else:
+            print("Invalid choice. Please select 1-8.")
+ 
+ 
+menu()
